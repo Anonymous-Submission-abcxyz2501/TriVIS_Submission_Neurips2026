@@ -1,0 +1,27 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Pre-extracted features and decoded frames (regenerated locally)
+features/
+**/features/
+*.npy
+frames/
+
+# Training artifacts
+logs/
+wandb/
+checkpoints/
+*.ckpt
+*.pth
+results/
+
+# Editor / OS junk
+.DS_Store
+.idea/
+.vscode/
+*.swp

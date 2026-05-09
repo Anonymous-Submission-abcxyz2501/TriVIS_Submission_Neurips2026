@@ -1,0 +1,44 @@
+model:
+  target: llama_slt_3view_attn.LlamaSLT3ViewAttnPool
+  params:
+    lr: 6.0e-4
+    monitor: val/bleu4
+    model_name: ${oc.env:VIDEOLLAMA3_7B_PATH}
+    cache_dir: ${oc.env:HF_CACHE_DIR}
+    inter_hidden: 768
+    input_size: 2048
+    beam_size: 5
+    max_frame_len: 512
+    max_txt_len: 64
+    frame_sample_rate: 1
+    prompt: "Transcribe the sign sentence."
+    tuning_type: lora
+    lora_r: 16
+    lora_alpha: 32
+    lora_dropout: 0.1
+    fusion_mode: joint
+    warm_up_steps: 0
+    cross_modal_align: true
+    combined_loss: true
+    alpha: 1.0
+    use_in_context: false
+    num_in_context: 0
+    active_views: ["front", "left", "right"]
+    warmstart_path: null
+    warmstart_mode: null
+
+lightning:
+  callback:
+    learning_rate_logger:
+      target: pytorch_lightning.callbacks.LearningRateMonitor
+      params:
+        logging_interval: step
+  trainer:
+    accumulate_grad_batches: 2
+    accelerator: gpu
+    devices: 1
+    max_epochs: 200
+    num_sanity_val_steps: 0
+    gradient_clip_val: 1.0
+    check_val_every_n_epoch: 1
+    precision: bf16
